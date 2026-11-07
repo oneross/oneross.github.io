@@ -1,9 +1,3 @@
----
-title: Evidence-first legal AI
-created: 2026-11-07
-tags: [legal-ai, evidence-workflow]
----
-
 # Plan Alpha One
 
 ## Evidence controlled contract analysis with Claude
