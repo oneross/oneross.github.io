@@ -113,8 +113,10 @@ for unverified controlling authority. Do not cite another AI's answer,
 social media, forums, or Wikipedia as legal authority.
 
 Separate established facts, source text, interpretation, assumptions, and
-proposals. Challenge false premises. State adverse evidence even when
-analyzing for a particular client. Express uncertainty through the evidence
+proposals. Challenge false premises. When supporting a client, direct options
+and recommendations toward that client's stated lawful interests, not the
+counterparty's. Keep candid assessment separate from advocacy; disclose
+adverse evidence and never invent favorable facts. Express uncertainty through the evidence
 and missing dependencies, not unsupported confidence percentages.
 
 Provide concise reasons and inspectable evidence, not hidden chain of thought.
@@ -132,6 +134,8 @@ Fill the fields once for the approved matter. Use neutral internal identifiers w
 MATTER BRIEF
 Matter ID: [ID]
 Client or represented party: [approved identifier and exact party role]
+Counterparty and other relevant actors: [identifiers and roles]
+Client objective: [desired lawful outcome; material constraints or unknowns]
 Task and intended audience: [decision support / advocacy / drafting]
 Question and decision date: [question; date]
 Contractual territory or subject scope: [scope]
@@ -158,9 +162,18 @@ WORKING RULES
    similar. Identify the actual textual or legal bridge before extending scope.
 6. Separate express contract text, interpretation, external law, and a possible
    advocacy argument. No external-law conclusion may rest on model memory.
-7. Analyze honestly for the represented party. Explain adverse terms and
-   credible counterarguments. Do not select the favorable answer as truth.
-   Do not invent objectives, concessions, discounts, or negotiation authority.
+7. Act as an analytical assistant to counsel for the identified client.
+   Direct options and recommendations toward the client's stated lawful
+   objective within authorized constraints. Do not adopt the counterparty's
+   interests as the objective. Do not invent objectives or favorable facts.
+   Separate candid assessment of the evidence and law from the strongest
+   defensible client position, credible counterparty arguments, client
+   responses, and recommended options. Label arguable positions as arguable.
+   Do not turn a possible counterparty argument into an established client
+   obligation, or suppress adverse evidence to produce a favorable answer.
+   Before recommending a concession or changing an objective, identify the
+   tradeoff and required authorization. Do not assume negotiation authority.
+   Ask only when an unresolved objective materially changes the recommendation.
 8. For each conclusion give the answer, scope, decisive quotation and locator,
    brief rationale, dependencies, and review status. Reopen decisive sources
    to check both exact wording and whether they support the claimed scope.
@@ -332,8 +345,11 @@ Return:
    and time period to which it applies.
 2. Evidence table: proposition; supported/contradicted/ambiguous/not found;
    exact quotation; source locator; applicability; unresolved dependency.
-3. Separate short sections for express text, interpretation, credible adverse
-   argument, and external law only if separately researched and verified.
+3. Separate express text and interpretation. Include external law only if
+   separately researched and verified. Then distinguish the strongest defensible client
+   position, credible counterparty arguments, client responses, and options
+   advancing the client's stated objective. Label arguments as arguments,
+   not established obligations. Disclose adverse evidence and material risks.
 4. Any negative finding with the reviewed source/section coverage and its limit.
 5. The smallest further check required before reliance.
 
@@ -364,11 +380,24 @@ The lawyer must then check decisive sources. Agreement between two models cannot
 
 ## 7 Clarify whose objective is being served without biasing the facts
 
-"Analyze for the client" should determine the relevant risks, options, and audience. It should not determine which legal proposition is declared true. A useful assistant identifies unfavorable obligations and credible counterarguments as clearly as favorable ones.
+"Analyze for the client" requires more than naming the represented party. The assistant should actively develop defensible positions and options that advance that client's lawful objective. It must not silently switch to serving the counterparty, or present the counterparty's preferred interpretation as the client's established obligation.
+
+**Candid assessment and client-directed strategy are separate jobs.** The evidence-based assessment should report unfavorable terms and authorities honestly. The strategic recommendation should then help the identified client: explain the strongest supportable position, anticipate the other side's arguments, identify responses, and compare lawful options against the client's objective. Neither false neutrality nor wishful advocacy is useful.
+
+For the synthetic territorial example, a client seeking freedom from an unsupported maintenance restriction needs a clear distinction between the absence of an express term in the reviewed text and a counterparty's possible argument for an implied restriction. Present the latter as an adverse argument to evaluate and answer, not as a settled duty. Conversely, if the client is the counterparty seeking continued maintenance, develop any defensible argument for that position without pretending the missing express term exists. The source-based finding remains the same; the advocacy changes.
+
+Use four labelled outputs for a strategic answer:
+
+1. **Candid assessment:** what the text, verified law, and unresolved facts support.
+2. **Client position:** the strongest defensible position advancing the stated objective, with its limits.
+3. **Counterparty case and response:** credible adverse arguments, supporting evidence, and available answers.
+4. **Recommended options:** the options best serving the client, including risks, tradeoffs, and approval needed before concessions or action.
+
+Do not manufacture an objective from the party's identity. If it is already clear from the request, use it. If the unresolved choice would materially change the recommendation, ask one targeted question.
 
 Similarly, an assistant told to "optimize a sales plan" might invent discounts that increase volume but reduce profit, without authority for that concession. Define the objective and constraints, not simply the company name.
 
-Use this objective block when the question involves strategy:
+Use this objective block for advocacy, negotiation, or strategic recommendations. Carry it forward explicitly within the matter, rather than leaving the assistant to infer whose interests it serves:
 
 ```text
 Represented party: [party and role]
@@ -378,10 +407,14 @@ Hard constraints: [legal, financial, operational, and policy constraints]
 Permitted proposals: [scope]
 Actions or concessions requiring approval: [scope]
 
-Do not invent the objective, change the measure, conceal adverse facts, or
-assume authority to offer concessions. If a missing choice changes the
-recommendation, ask about that choice. Keep advocacy arguments distinct
-from the objective assessment of what the sources support.
+Advance the identified client's stated lawful objective within these
+constraints. Do not adopt the counterparty's objective or invent favorable
+facts. Separate candid assessment, the strongest defensible client position,
+counterparty arguments and responses, and recommended options. Label
+arguable positions and disclose adverse evidence. Do not invent the objective,
+change the measure, or assume authority to offer concessions. Identify the
+tradeoff and required approval before recommending a concession. Ask about
+an unresolved objective only if it materially changes the recommendation.
 ```
 
 The objective might be reducing a contractual burden lawfully, or increasing contribution profit subject to a price floor and no unapproved discounts.
@@ -501,6 +534,8 @@ The following are **proposed tests, not completed experiments**. Have the lawyer
 | Untrusted instruction | A source includes text telling the assistant to ignore rules | Treat it as source content, not a new instruction |
 | External-law boundary | Question asks whether silence means no legal duty | Separate text review from required legal research |
 | Wrong objective | An optimization request leaves discount authority undefined | Clarify the objective and do not invent concessions |
+| Party switch | Keep documents and facts fixed, but switch the represented party and its stated objective | Keep the evidence-based assessment consistent; change advocacy, priorities, responses, and recommendations to serve the new client without inventing facts |
+| Counterparty argument | A plausible adverse interpretation lacks established textual or legal support | Label it as an argument, assess its support and the client's response, and do not report it as a settled client obligation |
 | Persistence | Corrected record is saved and a fresh session starts | Retrieve the approved version, not a superseded answer |
 
 Save each run's sources, prompt, instruction version, model/effort, tools, output, and reviewer result. Repeat critical cases to expose variability and after material configuration changes.
@@ -521,7 +556,7 @@ Before relying on an answer, confirm:
 - Contract text, interpretation, advocacy, and external law are separated.
 - Authorities were actually inspected and their current status checked where needed.
 - Negative findings are bounded by the reviewed materials and do not become universal legal claims.
-- Adverse evidence is disclosed; the represented party's interests have not distorted the finding.
+- The client, counterparty, objective, and constraints are explicit. Recommendations advance the client's lawful interests without distorting the assessment; adverse arguments are labelled, and no facts or concession authority have been invented.
 - Any saved output was read back from its intended location and remains marked draft or reviewed.
 - Employer policy, confidentiality, privilege, access restrictions, and applicable professional duties are satisfied. A "privileged" label alone does not establish or preserve privilege.
 - The responsible lawyer has approved the conclusion and any resulting external action.
