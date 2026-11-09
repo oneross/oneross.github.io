@@ -1,0 +1,30 @@
+{
+  "title": "Research",
+  "intro": "Research reports on AI platforms and infrastructure.  Each report is password-protected.",
+  "reports": [
+    {
+      "slug": "2026-11-09-gpu",
+      "title": "Sizing GPU Capacity for Long-Context Agentic Inference",
+      "theme": "AI infrastructure and capacity",
+      "summary": "How serving layout, numeric precision, and GPU generation trade total throughput against per-agent speed, with a planning model and a validation plan.",
+      "generated": "2026-11-09",
+      "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-11-09-sandboxes",
+      "title": "Sub-Second Isolated Workspaces for Coding Agents",
+      "theme": "Agent runtime and safety",
+      "summary": "Designing a self-hosted service that hands an agent an isolated workspace in under half a second: latency budget, isolation choices, warm pools, harness capabilities, and controls.",
+      "generated": "2026-11-09",
+      "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-11-05-platforms",
+      "title": "Where Specialist Data Science Platforms Fit in an Owned AI Architecture",
+      "theme": "Platform strategy",
+      "summary": "Which work belongs inside specialist authoring and workflow platforms, which decisions a central AI platform should own, and how to test the difference.",
+      "generated": "2026-11-05",
+      "published": "2026-11-09"
+    }
+  ]
+}
