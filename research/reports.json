@@ -177,6 +177,22 @@
       "summary": "How an agent that senses its own quotas, budgets, and timing can schedule work around them and improve itself under supervision.",
       "generated": "2026-01-27",
       "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-04-10-agent-runtime",
+      "title": "The Agent Is the New Runtime",
+      "theme": "Agent design and architecture",
+      "summary": "Why the agent, not the program, is becoming the place where control flow lives, and why deterministic tools with agent-driven composition suit regulated environments.",
+      "generated": "2026-04-10",
+      "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-01-22-presence-map",
+      "title": "A Living Map of an Agent: Visualizing Presence and System Health",
+      "theme": "Human-AI interaction and experience",
+      "summary": "An interactive design that draws an assistant as a body: health arcs for how it senses and acts, an authorization membrane, intelligence units as organs, and requests as sparks.",
+      "generated": "2026-01-22",
+      "published": "2026-11-09"
     }
   ]
 }
