@@ -29,7 +29,7 @@
 <main>
   <h1>Research</h1>
   <p class="intro">Research reports on AI platforms, agents, and infrastructure.  Each report is password-protected.</p>
-  <p class="meta">6 reports.  Themes are listed by their most recent report, newest first within each theme.  "Written" is when a report was produced; "Published" is when it was posted here.  Latest: Sizing GPU Capacity for Long-Context Agentic Inference (written November 9, 2026).</p>
+  <p class="meta">18 reports.  Themes are listed by their most recent report, newest first within each theme.  "Written" is when a report was produced; "Published" is when it was posted here.  Latest: Sizing GPU Capacity for Long-Context Agentic Inference (written November 9, 2026).</p>
 
 <section aria-labelledby="t-inference-and-gpu-infrastructure">
   <h2 id="t-inference-and-gpu-infrastructure">Inference and GPU infrastructure</h2>
@@ -44,6 +44,16 @@
       <p>How a control loop that keeps re-tuning serving configuration as models, traffic, and hardware change could raise the yield of an owned, multi-generation fleet, with a bounded experiment program.</p>
       <p class="dates"><span>Written November 8, 2026</span><span>Published November 9, 2026</span></p>
     </li>
+    <li>
+      <a href="2026-10-23-inference-acceleration/"><span class="lock" aria-hidden="true">&#128274;</span>Inference Acceleration Options for an Owned GPU Cluster</a>
+      <p>How to compare serving engines, orchestration layers, and commercial accelerators against an open baseline on owned hardware, and what evidence to require.</p>
+      <p class="dates"><span>Written October 23, 2026</span><span>Published November 9, 2026</span></p>
+    </li>
+    <li>
+      <a href="2026-10-22-serving-playbook/"><span class="lock" aria-hidden="true">&#128274;</span>Serving a Two-Model Agentic Coding Platform on an Owned GPU Pod</a>
+      <p>A runnable design, validation, and operations playbook for routing and serving two models behind one endpoint, with a pilot-scale supplement.</p>
+      <p class="dates"><span>Written October 22, 2026</span><span>Published November 9, 2026</span></p>
+    </li>
   </ul>
 </section>
 <section aria-labelledby="t-agent-runtimes-and-sandboxes">
@@ -53,6 +63,11 @@
       <a href="2026-11-09-sandboxes/"><span class="lock" aria-hidden="true">&#128274;</span>Sub-Second Isolated Workspaces for Coding Agents</a>
       <p>Designing a self-hosted service that hands an agent an isolated workspace in under half a second: latency budget, isolation choices, warm pools, harness capabilities, and controls.</p>
       <p class="dates"><span>Written November 9, 2026</span><span>Published November 9, 2026</span></p>
+    </li>
+    <li>
+      <a href="2026-10-14-portable-environments/"><span class="lock" aria-hidden="true">&#128274;</span>Portable Agent Environments: A Capability Matrix and Conformance Protocol</a>
+      <p>Why a common create, run, and delete interface for agent environments is not enough, and how a capability-aware adapter and conformance tests make execution portable without hiding risky differences.</p>
+      <p class="dates"><span>Written October 14, 2026</span><span>Published November 9, 2026</span></p>
     </li>
   </ul>
 </section>
@@ -73,6 +88,66 @@
       <a href="2026-11-04-operating-model/"><span class="lock" aria-hidden="true">&#128274;</span>Operating Model for a Regulated GPU Platform</a>
       <p>How to organize reliability, platform engineering, and automation for a self-service on-premises GPU platform, with illustrative scenarios and discovery questions.</p>
       <p class="dates"><span>Written November 4, 2026</span><span>Published November 9, 2026</span></p>
+    </li>
+    <li>
+      <a href="2026-10-23-compute-catalog/"><span class="lock" aria-hidden="true">&#128274;</span>Designing an Internal AI Compute Service Catalog</a>
+      <p>Six product families for an internal AI compute offering, the choices customers should get, and the platform capabilities underneath.</p>
+      <p class="dates"><span>Written October 23, 2026</span><span>Published November 9, 2026</span></p>
+    </li>
+  </ul>
+</section>
+<section aria-labelledby="t-hybrid-and-distributed-ai-architecture">
+  <h2 id="t-hybrid-and-distributed-ai-architecture">Hybrid and distributed AI architecture</h2>
+  <ul class="reports">
+    <li>
+      <a href="2026-10-22-laptop-closes/"><span class="lock" aria-hidden="true">&#128274;</span>When the Laptop Closes: Distributed Intelligence and the Enterprise</a>
+      <p>What it would take for agent work to continue after a developer closes the laptop, and how that changes what an enterprise buys when it buys AI.</p>
+      <p class="dates"><span>Written October 22, 2026</span><span>Published November 9, 2026</span></p>
+    </li>
+    <li>
+      <a href="2026-10-15-work-dispatch/"><span class="lock" aria-hidden="true">&#128274;</span>Dispatching Work Across Heterogeneous Agent Runtimes</a>
+      <p>A specification for describing agent work once and running it on laptops, isolated sandboxes, self-hosted workers, or managed services, with authority and evidence that follow the work.</p>
+      <p class="dates"><span>Written October 15, 2026</span><span>Published November 9, 2026</span></p>
+    </li>
+    <li>
+      <a href="2026-10-14-microplatforms/"><span class="lock" aria-hidden="true">&#128274;</span>Microplatforms and the Boundaries of Agent Autonomy</a>
+      <p>How an operating model of agents near the work, shared context, and central infrastructure sets practical limits on agent autonomy.</p>
+      <p class="dates"><span>Written October 14, 2026</span><span>Published November 9, 2026</span></p>
+    </li>
+  </ul>
+</section>
+<section aria-labelledby="t-human-ai-interaction-and-experience">
+  <h2 id="t-human-ai-interaction-and-experience">Human-AI interaction and experience</h2>
+  <ul class="reports">
+    <li>
+      <a href="2026-10-16-work-triage/"><span class="lock" aria-hidden="true">&#128274;</span>From Conversation to Authorized Work: Designing an Agentic Work Triage Workbench</a>
+      <p>A design vision for a calm workbench that turns messages into reviewable proposals and carries a person's decision through to agent execution.</p>
+      <p class="dates"><span>Written October 16, 2026</span><span>Published November 9, 2026</span></p>
+    </li>
+    <li>
+      <a href="2026-10-15-voice-stack/"><span class="lock" aria-hidden="true">&#128274;</span>Giving an Existing Agent a Voice: The Composable Voice Stack</a>
+      <p>An architectural assessment of adding real-time voice to an existing agent from interchangeable speech, transport, and orchestration components.</p>
+      <p class="dates"><span>Written October 15, 2026</span><span>Published November 9, 2026</span></p>
+    </li>
+    <li>
+      <a href="2026-07-30-visible-reasoning/"><span class="lock" aria-hidden="true">&#128274;</span>Four Windows on a Running Machine: What Visible Reasoning Is For</a>
+      <p>Why transparency is too broad a reason to show an assistant's work in progress, and the distinct jobs a visible trace can do.</p>
+      <p class="dates"><span>Written July 30, 2026</span><span>Published November 9, 2026</span></p>
+    </li>
+    <li>
+      <a href="2026-07-30-model-choice/"><span class="lock" aria-hidden="true">&#128274;</span>The Fourth Currency: Why Model Pickers Ask the Wrong Question</a>
+      <p>Choosing a model bundles guesses about speed, cost, and quality; this essay proposes letting people state the goal instead.</p>
+      <p class="dates"><span>Written July 30, 2026</span><span>Published November 9, 2026</span></p>
+    </li>
+  </ul>
+</section>
+<section aria-labelledby="t-memory-and-knowledge-systems">
+  <h2 id="t-memory-and-knowledge-systems">Memory and knowledge systems</h2>
+  <ul class="reports">
+    <li>
+      <a href="2026-08-01-portable-memory/"><span class="lock" aria-hidden="true">&#128274;</span>Digital Double: An Open Standard for Portable Personal Memory</a>
+      <p>A proposed open standard for keeping personal memory in files you own, with audiences, provenance, and rules for what other assistants may read or write.</p>
+      <p class="dates"><span>Written August 1, 2026</span><span>Published November 9, 2026</span></p>
     </li>
   </ul>
 </section>

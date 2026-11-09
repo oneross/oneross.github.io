@@ -49,6 +49,102 @@
       "summary": "How to organize reliability, platform engineering, and automation for a self-service on-premises GPU platform, with illustrative scenarios and discovery questions.",
       "generated": "2026-11-04",
       "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-10-14-portable-environments",
+      "title": "Portable Agent Environments: A Capability Matrix and Conformance Protocol",
+      "theme": "Agent runtimes and sandboxes",
+      "summary": "Why a common create, run, and delete interface for agent environments is not enough, and how a capability-aware adapter and conformance tests make execution portable without hiding risky differences.",
+      "generated": "2026-10-14",
+      "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-10-16-work-triage",
+      "title": "From Conversation to Authorized Work: Designing an Agentic Work Triage Workbench",
+      "theme": "Human-AI interaction and experience",
+      "summary": "A design vision for a calm workbench that turns messages into reviewable proposals and carries a person's decision through to agent execution.",
+      "generated": "2026-10-16",
+      "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-07-30-visible-reasoning",
+      "title": "Four Windows on a Running Machine: What Visible Reasoning Is For",
+      "theme": "Human-AI interaction and experience",
+      "summary": "Why transparency is too broad a reason to show an assistant's work in progress, and the distinct jobs a visible trace can do.",
+      "generated": "2026-07-30",
+      "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-07-30-model-choice",
+      "title": "The Fourth Currency: Why Model Pickers Ask the Wrong Question",
+      "theme": "Human-AI interaction and experience",
+      "summary": "Choosing a model bundles guesses about speed, cost, and quality; this essay proposes letting people state the goal instead.",
+      "generated": "2026-07-30",
+      "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-10-15-work-dispatch",
+      "title": "Dispatching Work Across Heterogeneous Agent Runtimes",
+      "theme": "Hybrid and distributed AI architecture",
+      "summary": "A specification for describing agent work once and running it on laptops, isolated sandboxes, self-hosted workers, or managed services, with authority and evidence that follow the work.",
+      "generated": "2026-10-15",
+      "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-10-22-laptop-closes",
+      "title": "When the Laptop Closes: Distributed Intelligence and the Enterprise",
+      "theme": "Hybrid and distributed AI architecture",
+      "summary": "What it would take for agent work to continue after a developer closes the laptop, and how that changes what an enterprise buys when it buys AI.",
+      "generated": "2026-10-22",
+      "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-10-14-microplatforms",
+      "title": "Microplatforms and the Boundaries of Agent Autonomy",
+      "theme": "Hybrid and distributed AI architecture",
+      "summary": "How an operating model of agents near the work, shared context, and central infrastructure sets practical limits on agent autonomy.",
+      "generated": "2026-10-14",
+      "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-10-23-inference-acceleration",
+      "title": "Inference Acceleration Options for an Owned GPU Cluster",
+      "theme": "Inference and GPU infrastructure",
+      "summary": "How to compare serving engines, orchestration layers, and commercial accelerators against an open baseline on owned hardware, and what evidence to require.",
+      "generated": "2026-10-23",
+      "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-10-22-serving-playbook",
+      "title": "Serving a Two-Model Agentic Coding Platform on an Owned GPU Pod",
+      "theme": "Inference and GPU infrastructure",
+      "summary": "A runnable design, validation, and operations playbook for routing and serving two models behind one endpoint, with a pilot-scale supplement.",
+      "generated": "2026-10-22",
+      "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-10-23-compute-catalog",
+      "title": "Designing an Internal AI Compute Service Catalog",
+      "theme": "AI platform strategy and operations",
+      "summary": "Six product families for an internal AI compute offering, the choices customers should get, and the platform capabilities underneath.",
+      "generated": "2026-10-23",
+      "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-10-15-voice-stack",
+      "title": "Giving an Existing Agent a Voice: The Composable Voice Stack",
+      "theme": "Human-AI interaction and experience",
+      "summary": "An architectural assessment of adding real-time voice to an existing agent from interchangeable speech, transport, and orchestration components.",
+      "generated": "2026-10-15",
+      "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-08-01-portable-memory",
+      "title": "Digital Double: An Open Standard for Portable Personal Memory",
+      "theme": "Memory and knowledge systems",
+      "summary": "A proposed open standard for keeping personal memory in files you own, with audiences, provenance, and rules for what other assistants may read or write.",
+      "generated": "2026-08-01",
+      "published": "2026-11-09"
     }
   ]
 }
