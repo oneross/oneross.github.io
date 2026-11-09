@@ -1,11 +1,11 @@
 {
   "title": "Research",
-  "intro": "Research reports on AI platforms and infrastructure.  Each report is password-protected.",
+  "intro": "Research reports on AI platforms, agents, and infrastructure.  Each report is password-protected.",
   "reports": [
     {
       "slug": "2026-11-09-gpu",
       "title": "Sizing GPU Capacity for Long-Context Agentic Inference",
-      "theme": "AI infrastructure and capacity",
+      "theme": "Inference and GPU infrastructure",
       "summary": "How serving layout, numeric precision, and GPU generation trade total throughput against per-agent speed, with a planning model and a validation plan.",
       "generated": "2026-11-09",
       "published": "2026-11-09"
@@ -13,7 +13,7 @@
     {
       "slug": "2026-11-09-sandboxes",
       "title": "Sub-Second Isolated Workspaces for Coding Agents",
-      "theme": "Agent runtime and safety",
+      "theme": "Agent runtimes and sandboxes",
       "summary": "Designing a self-hosted service that hands an agent an isolated workspace in under half a second: latency budget, isolation choices, warm pools, harness capabilities, and controls.",
       "generated": "2026-11-09",
       "published": "2026-11-09"
@@ -21,7 +21,7 @@
     {
       "slug": "2026-11-05-platforms",
       "title": "Where Specialist Data Science Platforms Fit in an Owned AI Architecture",
-      "theme": "Platform strategy",
+      "theme": "AI platform strategy and operations",
       "summary": "Which work belongs inside specialist authoring and workflow platforms, which decisions a central AI platform should own, and how to test the difference.",
       "generated": "2026-11-05",
       "published": "2026-11-09"
@@ -29,7 +29,7 @@
     {
       "slug": "2026-11-08-mixed-fleet",
       "title": "Continuously Tuned Inference for an Owned, Mixed GPU Fleet",
-      "theme": "AI infrastructure and capacity",
+      "theme": "Inference and GPU infrastructure",
       "summary": "How a control loop that keeps re-tuning serving configuration as models, traffic, and hardware change could raise the yield of an owned, multi-generation fleet, with a bounded experiment program.",
       "generated": "2026-11-08",
       "published": "2026-11-09"
@@ -37,7 +37,7 @@
     {
       "slug": "2026-11-05-fine-tuning",
       "title": "Offering Model Fine-Tuning as an Internal Service",
-      "theme": "Platform strategy",
+      "theme": "AI platform strategy and operations",
       "summary": "Market options and reference stacks for a self-service fine-tuning offering on owned and cloud accelerators, with a phased build plan.",
       "generated": "2026-11-05",
       "published": "2026-11-09"
@@ -45,7 +45,7 @@
     {
       "slug": "2026-11-04-operating-model",
       "title": "Operating Model for a Regulated GPU Platform",
-      "theme": "Platform strategy",
+      "theme": "AI platform strategy and operations",
       "summary": "How to organize reliability, platform engineering, and automation for a self-service on-premises GPU platform, with illustrative scenarios and discovery questions.",
       "generated": "2026-11-04",
       "published": "2026-11-09"
