@@ -193,6 +193,14 @@
       "summary": "An interactive design that draws an assistant as a body: health arcs for how it senses and acts, an authorization membrane, intelligence units as organs, and requests as sparks.",
       "generated": "2026-01-22",
       "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-01-24-decision-velocity",
+      "title": "Decision Velocity: The Bottleneck Moved, and It Isn't Code",
+      "theme": "AI platform strategy and operations",
+      "summary": "Why faster implementation has not made large regulated enterprises faster, and how activating the decision loop itself, with clear human and machine boundaries, raises decision speed without weakening controls.",
+      "generated": "2026-01-24",
+      "published": "2026-11-09"
     }
   ]
 }
