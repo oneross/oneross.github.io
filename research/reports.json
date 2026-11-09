@@ -145,6 +145,38 @@
       "summary": "A proposed open standard for keeping personal memory in files you own, with audiences, provenance, and rules for what other assistants may read or write.",
       "generated": "2026-08-01",
       "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-01-23-fast-and-slow",
+      "title": "Fast and Slow: A Dual-Process Architecture for Conversational Voice Agents",
+      "theme": "Agent design and architecture",
+      "summary": "A fast responder that answers within conversational latency while a slower reasoning model works, with routing rules, interruption handling, and a hand-off between the two.",
+      "generated": "2026-01-23",
+      "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-01-17-delegated-authority",
+      "title": "Delegated Compositional Authority: Trust and Permissions for Multi-Agent Systems",
+      "theme": "AI security, governance, and policy",
+      "summary": "A framework for authorizing agent actions on behalf of several people, combining relationship-based trust, identity confidence, attenuated delegation, time-bounded scopes, meta-permissions, and bounded intelligence units.",
+      "generated": "2026-01-17",
+      "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-01-27-atomic-memory",
+      "title": "Atomic Claims and Tiered Retrieval: Memory for a Personal AI Partner",
+      "theme": "Memory and knowledge systems",
+      "summary": "Why small, single-claim knowledge files with tiered retrieval and validation work better than monolithic notes for an assistant that must remember a person over years.",
+      "generated": "2026-01-27",
+      "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-01-27-interoception",
+      "title": "Interoception: Resource-Aware Agents and Speculative Self-Improvement",
+      "theme": "Agent design and architecture",
+      "summary": "How an agent that senses its own quotas, budgets, and timing can schedule work around them and improve itself under supervision.",
+      "generated": "2026-01-27",
+      "published": "2026-11-09"
     }
   ]
 }
