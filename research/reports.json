@@ -217,6 +217,46 @@
       "summary": "A guide to sourcing, evaluating, and operating open-weight models, including evidence requirements, control boundaries, and a proposed onboarding process.",
       "generated": "2026-11-13",
       "published": "2026-11-13"
+    },
+    {
+      "slug": "2026-11-12-environment-management",
+      "title": "Separating Infrastructure Qualification from Workload Testing",
+      "theme": "Inference and GPU infrastructure",
+      "summary": "How to share production-grade accelerator capacity for workload testing while qualifying infrastructure changes separately.",
+      "generated": "2026-11-12",
+      "published": "2026-11-13"
+    },
+    {
+      "slug": "2026-11-12-fleet-topology",
+      "title": "Designing GPU Fleet Topology and Scheduling Boundaries",
+      "theme": "Inference and GPU infrastructure",
+      "summary": "How fleets, clusters, fabrics, and node pools shape scheduling boundaries.",
+      "generated": "2026-11-12",
+      "published": "2026-11-13"
+    },
+    {
+      "slug": "2026-11-12-lifecycle-ownership",
+      "title": "Who Owns GPU Platform Upgrades and Remediation?",
+      "theme": "Inference and GPU infrastructure",
+      "summary": "An operating model for driver upgrades and vulnerability response across infrastructure, workload, and support teams.",
+      "generated": "2026-11-12",
+      "published": "2026-11-13"
+    },
+    {
+      "slug": "2026-11-12-fleet-diagnosis",
+      "title": "Diagnosing GPU Fleet Problems Across the Stack",
+      "theme": "Inference and GPU infrastructure",
+      "summary": "How to distinguish telemetry from diagnosis and test whether tools explain workload slowdowns.",
+      "generated": "2026-11-12",
+      "published": "2026-11-13"
+    },
+    {
+      "slug": "2026-11-12-fine-tuning-api-mvp",
+      "title": "A Thin API for Self-Service Fine-Tuning",
+      "theme": "AI platform strategy and operations",
+      "summary": "A minimal jobs interface, versioned recipes, and a validation plan that separates governance from execution.",
+      "generated": "2026-11-12",
+      "published": "2026-11-13"
     }
   ]
 }
