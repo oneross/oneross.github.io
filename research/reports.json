@@ -3,6 +3,14 @@
   "intro": "Research reports on AI platforms, agents, and infrastructure.  Each report is password-protected.",
   "reports": [
     {
+      "slug": "2026-11-13-model-onboarding",
+      "title": "Bringing Open-Weight Models into a Regulated Enterprise",
+      "theme": "AI security, governance, and policy",
+      "summary": "A first-principles guide to evaluating and onboarding downloadable AI models: the questions to ask about rights, artifacts, behavior, and reach, how the main security and safety frameworks relate, and a reference process.",
+      "generated": "2026-11-13",
+      "published": "2026-11-13"
+    },
+    {
       "slug": "2026-11-09-gpu",
       "title": "Sizing GPU Capacity for Long-Context Agentic Inference",
       "theme": "Inference and GPU infrastructure",
