@@ -209,6 +209,14 @@
       "summary": "Why faster implementation has not made large regulated enterprises faster, and how activating the decision loop itself, with clear human and machine boundaries, raises decision speed without weakening controls.",
       "generated": "2026-01-24",
       "published": "2026-11-09"
+    },
+    {
+      "slug": "2026-11-13-model-assurance-v2",
+      "title": "Enterprise Open-Weight Model Assurance and Onboarding, Version 2",
+      "theme": "AI security, governance, and policy",
+      "summary": "A guide to sourcing, evaluating, and operating open-weight models, including evidence requirements, control boundaries, and a proposed onboarding process.",
+      "generated": "2026-11-13",
+      "published": "2026-11-13"
     }
   ]
 }
