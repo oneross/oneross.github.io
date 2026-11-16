@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>GPUStack: Technical and Enterprise-Readiness Assessment</title>
+<style>
+  :root { color-scheme: light dark; --bg:#f6f8fa; --card:#fff; --fg:#1f2328; --muted:#59636e; --border:#d1d9e0; --accent:#0969da;
+          --good:#1a7f37; --warn:#9a6700; --bad:#cf222e; --unk:#6e7781; --goodbg:#dafbe1; --warnbg:#fff8c5; --badbg:#ffebe9; --unkbg:#eaeef2; --code:#eff1f3; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --card:#151b23; --fg:#e6edf3; --muted:#9198a1; --border:#3d444d; --accent:#4493f8;
+          --good:#3fb950; --warn:#d29922; --bad:#f85149; --unk:#9198a1; --goodbg:#12261e; --warnbg:#272115; --badbg:#2d1214; --unkbg:#21262d; --code:#21262d; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif; }
+  main { max-width: 900px; margin: 0 auto; padding: 32px 16px 80px; }
+  h1 { font-size: 30px; line-height:1.25; margin: 0 0 6px; }
+  h2 { font-size: 22px; margin: 44px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 17px; margin: 26px 0 8px; }
+  p, li { max-width: 78ch; }
+  .meta { color: var(--muted); font-size: 14px; margin: 0 0 24px; }
+  a { color: var(--accent); }
+  code { background: var(--code); padding: 1px 5px; border-radius: 4px; font-size: 0.88em; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin: 16px 0; }
+  .bottomline { border-left: 4px solid var(--accent); }
+  .bottomline h2 { margin-top: 4px; border: 0; padding: 0; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 18px; font-size: 14.5px; background: var(--card); }
+  th, td { text-align: left; vertical-align: top; padding: 8px 10px; border: 1px solid var(--border); }
+  th { background: var(--unkbg); font-weight: 600; }
+  .scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .pill { display:inline-block; font-size:12.5px; font-weight:600; padding:1px 8px; border-radius:999px; white-space:nowrap; }
+  .g { color:var(--good); background:var(--goodbg); } .w { color:var(--warn); background:var(--warnbg); }
+  .b { color:var(--bad); background:var(--badbg); } .u { color:var(--unk); background:var(--unkbg); }
+  .arch { display:grid; gap:8px; margin: 14px 0; font-size: 14px; }
+  .layer { border:1px solid var(--border); border-radius:8px; padding:10px 12px; background:var(--card); }
+  .layer b { display:block; margin-bottom:4px; }
+  .row { display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:8px; }
+  .sub { border:1px dashed var(--border); border-radius:6px; padding:6px 8px; font-size:13px; }
+  .note { color: var(--muted); font-size: 14px; }
+  .toc { columns: 2; column-gap: 32px; font-size: 15px; }
+  @media (max-width: 640px) { .toc { columns: 1; } h1 { font-size: 25px; } }
+  .sources li { font-size: 14px; margin-bottom: 4px; word-break: break-word; }
+  .k { font-weight:600; }
+</style>
+</head>
+<body>
+<main>
+
+<h1>GPUStack: Technical and Enterprise-Readiness Assessment</h1>
+<p class="meta">Prepared November 16, 2026 &middot; Scope: what the product is, its claims, maturity, security record, compatibility with Red Hat OpenShift, NVIDIA Run:ai, NVIDIA Base Command Manager (BCM) and DGX systems, support model, and the competitive landscape &middot; Prepared with Claude (Anthropic) from public sources listed at the end. Assessments are labeled as such; nothing here was tested hands-on.</p>
+
+<div class="card bottomline">
+<h2>Bottom line</h2>
+<p><span class="k">What it is:</span> an Apache 2.0 control plane, written in Python by a Shenzhen-based startup, that turns a pool of heterogeneous accelerators (NVIDIA, AMD, Huawei Ascend and six other mostly Chinese vendors) into two products: an OpenAI- and Anthropic-compatible model API ("MaaS") and on-demand SSH/Jupyter GPU instances ("GPUaaS"). It does not run models itself. It picks, configures and launches vLLM, SGLang, TensorRT-LLM, llama.cpp or MindIE containers, routes traffic to them through an embedded Higress (Envoy-based) gateway, and adds users, API keys, quotas, metering and dashboards.</p>
+<p><span class="k">Where it is strong:</span> the fastest path from "a handful of GPU boxes" to "a governed internal model API" that I found; unusually broad accelerator coverage; day-zero model recipes; an honest public performance lab; fast release cadence.</p>
+<p><span class="k">Where it is weak for a regulated enterprise:</span> (1) <b>security record</b>: five authentication or authorization flaws disclosed in 2026, including a critical (CVSS 9.8) admin bypass that CISA added to its Known Exploited Vulnerabilities catalog on November 9, 2026 after attackers used it to open reverse shells on GPU workers; (2) <b>privilege footprint</b>: workers run privileged with host networking and the Docker socket, and on Kubernetes it labels its namespaces <code>privileged</code> and installs its own device manager, Kueue and NFD; (3) <b>no stated support</b> for OpenShift, Run:ai or BCM, and its Kubernetes path is labeled experimental in its own docs; (4) <b>open-source high availability is absent</b> (single-replica server), HA and tenancy are in a sales-led Enterprise edition with no public pricing, SLA terms or named customers; (5) <b>third-party-risk profile</b> of a small PRC-headquartered vendor.</p>
+<p><span class="k">Verdict (assessment):</span> not ready to sit as the control plane over a production DGX estate that already runs OpenShift and Run:ai. Its scheduling and device-allocation layers would compete with Run:ai and the NVIDIA GPU Operator for the same GPUs. Reasonable uses: an isolated lab for trialling non-NVIDIA accelerators quickly, a source of tuned engine recipes, and a reference design for what an internal "model API plus GPU instances" product should feel like. Re-evaluate in 2027 against its security cadence, an independent audit, and any OpenShift certification.</p>
+</div>
+
+<div class="card">
+<b>Contents</b>
+<ol class="toc">
+<li><a href="#what">What it actually is</a></li>
+<li><a href="#claims">Claims versus evidence</a></li>
+<li><a href="#maturity">Maturity and stability</a></li>
+<li><a href="#security">Security record</a></li>
+<li><a href="#compat">Compatibility: OpenShift, Run:ai, BCM, DGX</a></li>
+<li><a href="#ready">Enterprise-readiness scorecard</a></li>
+<li><a href="#support">Company and support model</a></li>
+<li><a href="#market">Market comparison</a></li>
+<li><a href="#fit">Where it could fit, and how to evaluate</a></li>
+<li><a href="#sources">Sources</a></li>
+</ol>
+</div>
+
+<h2 id="what">1. What it actually is</h2>
+
+<p>GPUStack describes itself as a "GPU cluster manager for AI model serving and GPU instance provisioning." Stripped of marketing, it is an orchestration and governance layer that sits between users and inference engines. The engines (vLLM, SGLang and so on) do the math; GPUStack decides where they run, with what flags, and who may call them.</p>
+
+<div class="arch" aria-label="GPUStack architecture, top to bottom">
+  <div class="layer"><b>Clients</b>OpenAI-compatible and Anthropic-compatible APIs; integrations listed for OpenWebUI, LangChain, Dify, RAGFlow, n8n, Claude Code. Web UI for admins and users.</div>
+  <div class="layer"><b>Gateway (data plane)</b>Embedded or external Higress (Alibaba-originated, Envoy/Istio-based AI gateway) with GPUStack WASM plugins for API-key auth, weighted routing, retries, fallback and "virtual model" aliases. Can also route to external model providers.</div>
+  <div class="layer"><b>Server (control plane, CPU-only)</b>
+    <div class="row">
+      <div class="sub">API and UI; users, orgs, RBAC, API keys, quotas</div>
+      <div class="sub">Scheduler: GPU placement, engine selection, resource fit (VRAM/KV-cache estimates)</div>
+      <div class="sub">Controllers for model instances, clusters, cloud workers</div>
+      <div class="sub">State in embedded PostgreSQL (external PostgreSQL/MySQL recommended for production)</div>
+      <div class="sub">Metering, usage and cost reports; Prometheus/Grafana</div>
+    </div></div>
+  <div class="layer"><b>Cluster providers</b>
+    <div class="row">
+      <div class="sub"><b>Docker</b>: a privileged worker container per host, launches engine containers via the host Docker socket</div>
+      <div class="sub"><b>Kubernetes</b>: Helm-rendered worker DaemonSet per GPU vendor plus the GPUStack Operator (device manager, Kueue, NFD, CSI model cache)</div>
+      <div class="sub"><b>Cloud</b>: dynamic GPU VMs (docs list DigitalOcean and SHUIHUA FUTURE; marketing also names AWS, Azure, GCP, Alibaba)</div>
+    </div></div>
+  <div class="layer"><b>Workloads</b>Engine containers (vLLM, SGLang, TensorRT-LLM, llama.cpp, MindIE, custom), optional Ray or vLLM multi-process for multi-node, prefill/decode disaggregation, shared KV cache (LMCache/HiCache); or SSH/Jupyter "GPU instances" with S3/NFS storage.</div>
+  <div class="layer"><b>Accelerators</b>NVIDIA, AMD (tested); Huawei Ascend (tested); Hygon, Moore Threads, Iluvatar, Cambricon, MetaX (experimental); T-Head PPU. GPU slicing for models and instances.</div>
+</div>
+
+<h3>Control plane</h3>
+<p>A single server process (Python) provides the API, UI, authentication, scheduler and metering. It can run on a CPU-only machine and manages multiple clusters across on-premises and cloud. In the open-source Helm chart the server is a StatefulSet that does not support more than one replica; high availability of the control plane and of model services is an Enterprise-edition feature. State lives in embedded PostgreSQL by default, with external PostgreSQL or MySQL recommended for production (openGauss and OceanBase, both popular in China, were added in v2.2).</p>
+
+<h3>Workers and how workloads launch</h3>
+<p>On plain hosts, each node runs a <code>gpustack-worker</code> container started with <code>--privileged</code>, <code>--network=host</code> and the host's <code>/var/run/docker.sock</code> mounted. The worker reports GPU inventory (via the separate <code>gpustack-runtime</code> library, which detects devices and launches workloads) and starts engine containers on the host's Docker daemon. Mounting the Docker socket into a privileged container is effectively root on the host; that is a design choice, not a misconfiguration.</p>
+<p>On Kubernetes (v2.2+), you "register" a cluster from the UI and apply a generated manifest. That installs the GPUStack Helm chart and the GPUStack Operator, which brings: one device-manager DaemonSet per accelerator vendor that discovers devices and <em>serves its own Kubernetes device plugins</em>; a worker control plane that uses Kueue for admission; Node Feature Discovery; CSI drivers for a node-local model cache; Topograph for topology; and CRDs under <code>worker.gpustack.ai</code> (<code>Instance</code>, <code>InstanceType</code>, <code>Devices</code>, <code>ModelArtifact</code>, <code>KVCacheBackend</code> and others), admission webhooks and APIServices. Kueue and NFD are mandatory. GPUStack labels its namespaces with Pod Security Admission level <code>privileged</code> because model pods need host networking (RDMA), hostPort (disaggregated serving), host IPC (CUDA IPC) and device mounts; its docs warn that every pod in those namespaces is exempt from PSA.</p>
+
+<h3>Inference features</h3>
+<ul>
+<li><b>Pluggable engines with version pinning.</b> Each release ships a matrix of engine images per accelerator stack (for example v2.2.2: vLLM 0.25.1/0.24.0 and SGLang 0.5.15 on CUDA 12.9 and 13.0, ROCm 7.2, Ascend CANN 9.0). Users can register custom engines from YAML, which is also the path attackers abused (see Section 4).</li>
+<li><b>Automatic engine and parameter selection</b>, with "latency" and "throughput" performance modes and an Auto Tune benchmark that searches for peak throughput or highest concurrency within an SLO.</li>
+<li><b>Advanced serving:</b> speculative decoding (EAGLE3, MTP, n-gram), prefill/decode disaggregation with separate replica counts, shared and extended KV cache across nodes, multi-node tensor/pipeline parallelism.</li>
+<li><b>Model types:</b> LLM, multimodal, embedding, reranker, image, speech, OCR; sources from Hugging Face, ModelScope or local files.</li>
+<li><b>Routing:</b> multi-model load balancing and failover, traffic weights, retry and fallback, and virtual model names for blue/green upgrades.</li>
+</ul>
+
+<h3>GPU instances (GPUaaS)</h3>
+<p>Separately from model serving, GPUStack provisions SSH-accessible GPU containers with key injection, Jupyter, S3/NFS persistent storage and GPU slicing, aimed at development, fine-tuning and interactive work. This puts it in the same conversation as internal "GPU cloud" platforms, not just inference servers.</p>
+
+<h2 id="claims">2. Claims versus evidence</h2>
+<div class="scroll"><table>
+<tr><th>Claim (site, README)</th><th>What the evidence shows</th><th>Assessment</th></tr>
+<tr><td>"Fully open source under Apache 2.0"</td><td>Core repo is Apache 2.0. The Enterprise edition adds HA, multi-tenancy with organization isolation, LDAP/OIDC/SAML SSO, audit logs, IP allow/block lists, topology view, billing reports and white-labeling; its code is not public.</td><td><span class="pill w">Open core</span> Production-critical features (HA, audit, tenant isolation) are commercial.</td></tr>
+<tr><td>Up to 63% lower TTFT, +135% and +85% throughput</td><td>Measured against "unoptimized vLLM baselines" (Qwen3-8B on 8&times;H100; GLM-4.6 on 8&times;H200; Qwen3-235B on 16&times;H100). Methods are published in its Performance Lab.</td><td><span class="pill w">Plausible, but relative to defaults</span> Gains come from engine configuration (speculative decoding, parallelism, KV cache) that a skilled team can reproduce directly in vLLM or SGLang. The value is packaged tuning, not proprietary kernels.</td></tr>
+<tr><td>"Enterprise-grade operations"</td><td>Automated failure recovery, load balancing, monitoring, auth and RBAC exist. Open-source server cannot run more than one replica; Kubernetes deployment with Higress is labeled experimental in the v2.2 docs.</td><td><span class="pill b">Overstated for OSS</span></td></tr>
+<tr><td>Broad hardware support (9+ vendors)</td><td>NVIDIA, AMD and Ascend are "tested"; Hygon, Moore Threads, Iluvatar, Cambricon and MetaX are "experimental" on both Docker and Kubernetes.</td><td><span class="pill g">True for the big three</span> Breadth is real; depth varies.</td></tr>
+<tr><td>Dynamic provisioning on AWS, Azure, GCP, Alibaba</td><td>Current cluster-management docs list DigitalOcean and SHUIHUA FUTURE as cloud providers and do not mention AWS.</td><td><span class="pill w">Docs and marketing disagree</span> Verify before relying on it.</td></tr>
+<tr><td>"Enterprises worldwide"</td><td>No customers are named on the site. The project has roughly 6,000 GitHub stars and over 940,000 Docker Hub pulls (as of Nov 5, 2026); a Chinese state cloud (CTyun) lists it in its marketplace.</td><td><span class="pill u">Unverified</span> Adoption is real at community scale; enterprise references are not public.</td></tr>
+<tr><td>Day-0 model support</td><td>Release notes routinely add catalog entries for new open-weight models (GLM, Kimi, MiniMax, Qwen, DeepSeek) within days, with published benchmarks.</td><td><span class="pill g">Credible</span> This is a genuine strength, especially for Chinese open-weight models.</td></tr>
+</table></div>
+
+<h2 id="maturity">3. Maturity and stability</h2>
+<div class="scroll"><table>
+<tr><th>Date</th><th>Milestone</th></tr>
+<tr><td>2022</td><td>Company founded in Shenzhen as Seal (cloud-native tooling), later renamed GPUStack.ai.</td></tr>
+<tr><td>May 2024</td><td>GitHub repo created; v0.x targeted laptops and workstations (macOS, Windows, Linux) with llama-box and llama.cpp.</td></tr>
+<tr><td>Feb 2025</td><td>FOSDEM talk by an ex-Rancher, ex-Alibaba engineer on the project.</td></tr>
+<tr><td>Nov 24, 2025</td><td>v2.0: re-architected around multi-cluster management, pluggable engines, KV cache and speculative decoding, Higress gateway (v2.0.1 also stopped embedding a worker in the server by default).</td></tr>
+<tr><td>Mar 7, 2026</td><td>v2.1: T-Head PPU, vLLM-Omni, unified access to public and private model providers, backend marketplace, offline installation.</td></tr>
+<tr><td>Jun 18, 2026</td><td>v2.2.0: Kubernetes server deployment docs, openGauss/OceanBase DBs, per-key token usage, vLLM Rayless mode. Silently fixed the critical loopback-admin flaw.</td></tr>
+<tr><td>Jul 2026</td><td>v2.2.1 to v2.2.3: security fixes (worker endpoints, missing authorization, SAML), Helm upgrade guide.</td></tr>
+<tr><td>Oct 23, 2026</td><td>v2.3.0: Kubernetes registration refinements, self-signed TLS for workers, another fix for cross-cluster worker registration.</td></tr>
+</table></div>
+<p><b>Signals.</b> Release cadence is fast: roughly monthly patch releases, each preceded by release candidates. Community metrics are healthy for a two-year-old infrastructure project: about 5,750 stars in late September and about 6,000 in early November 2026, about 565 forks, and about 614 open issues in July 2026. The large open-issue count and fixes such as "Docker container restarting 5 times a day" (v2.2.0) and file-descriptor leaks on hybrid AMD/NVIDIA hosts (v2.2.2) point to a product still hardening.</p>
+<p><b>Assessment.</b> Two years old, one major rewrite twelve months ago, a formal Kubernetes path only since mid-2026, self-described as experimental. Functionally rich, operationally young. The architecture (v1 to v2) and install method (curl script deprecated in v0.7, now Docker and Helm) have both changed recently; expect more churn, especially in the Kubernetes operator.</p>
+
+<h2 id="security">4. Security record</h2>
+<div class="scroll"><table>
+<tr><th>Identifier</th><th>Issue</th><th>Severity</th><th>Affected / fixed</th></tr>
+<tr><td>CVE-2026-102895 (GHSA-gj9m-f8ph-pmhr)</td><td>Requests that appear to come from loopback are treated as the built-in admin because <code>force_auth_localhost</code> defaults to false. A same-host reverse proxy (Nginx, Traefik, Caddy) makes every internet request look local; a forged <code>X-GPUStack-Real-IP</code> header can do the same. <b>Exploited in the wild</b> against a v2.1.1 deployment: attackers registered custom inference backends via <code>POST /v2/inference-backends/from-yaml</code> to launch reverse shells on workers. CISA KEV-listed Nov 9, 2026.</td><td><span class="pill b">Critical 9.8</span></td><td>Before 2.2.0 / fixed 2.2.0 (2.2.2+ recommended)</td></tr>
+<tr><td>CVE-2026-102894</td><td><code>/auth/saml/callback</code> issued session tokens without verifying SAML signatures, even when SAML was not configured.</td><td><span class="pill b">Critical 9.1</span></td><td>Fixed 2.2.2</td></tr>
+<tr><td>(2.2.2 release notes)</td><td>Missing authorization on several cluster and resource endpoints, allowing cross-user access and cluster takeover.</td><td><span class="pill b">High</span></td><td>2.2.0 to 2.2.1 / fixed 2.2.2</td></tr>
+<tr><td>CVE-2026-58658</td><td>Unauthenticated <code>/serveLogs</code> and <code>/debug</code> on worker ports exposed inference logs (prompts and completions) and allowed worker config changes.</td><td><span class="pill b">High 8.2&ndash;8.8</span></td><td>Through 2.2.1 / fixed 2.2.2</td></tr>
+<tr><td>GHSA-g665-42m7-mgcv</td><td>Cluster-scoped worker credentials could register or modify workers in other clusters.</td><td><span class="pill w">Not scored here</span></td><td>Fixed 2.3.0</td></tr>
+<tr><td>CVE-2026-103002</td><td>Listed by Red Hat's CVE database as "a flaw in GPUStack"; no detail found.</td><td><span class="pill u">Unknown</span></td><td>Unknown</td></tr>
+</table></div>
+<p><b>Pattern (assessment).</b> All five detailed issues are trust-boundary mistakes: trusting network origin, trusting unsigned assertions, unauthenticated internal ports, missing object-level authorization, and missing cluster scoping. That is a design-review and threat-modeling gap, not bad luck. Combined with the custom-backend feature (by design, an admin can run any container on privileged workers), <b>GPUStack admin equals root on every GPU node it manages</b>, plus access to stored cloud credentials and every prompt flowing through the gateway.</p>
+<p><b>Disclosure hygiene.</b> The critical fix landed May 19, shipped June 18, the GitHub advisory followed July 31, and the CVE reached NVD only on November 4. The Cloud Security Alliance notes that teams tracking only CVE feeds had a months-long blind spot, and that a <code>force_auth_localhost=false</code> default "would fail a procurement or intake check for default authentication." To the vendor's credit, the fixes were real and the remediation guidance (stop deriving identity from network source) is sound.</p>
+<p><b>If you run it anyway:</b> v2.3.0 or later; set <code>force_auth_localhost=true</code>; strip client forwarding headers at the edge; never expose the API or worker ports beyond a management network; egress-filter GPU workers; scope cloud credentials narrowly; audit admin accounts, <code>*</code>-scoped API keys and YAML-registered backends; subscribe to the GitHub advisories directly rather than relying on CVE feeds.</p>
+
+<h2 id="compat">5. Compatibility: OpenShift, Run:ai, BCM and DGX</h2>
+<p class="note">None of these four is named in GPUStack's documentation. Ratings below are my assessment from its documented architecture and the requirements of each platform.</p>
+<div class="scroll"><table>
+<tr><th>Platform</th><th>Rating</th><th>Analysis</th></tr>
+<tr><td><b>Red Hat OpenShift</b></td><td><span class="pill b">Not supported; possible with heavy exceptions</span></td><td>
+<ul>
+<li>Docs and Helm chart never mention OpenShift or Security Context Constraints. Worker pods use <code>hostNetwork</code> and host paths; model pods need host IPC, hostPort and device mounts. On OpenShift that means granting <code>privileged</code> (or a custom hostnetwork-plus-privileged) SCC to its service accounts, which most OpenShift security baselines forbid outside platform namespaces.</li>
+<li>Dependencies exist in Red Hat form: the Red Hat build of Kueue is a supported operator on OCP 4.18+, and the NFD operator is standard (also an NVIDIA GPU Operator prerequisite). But GPUStack ships its own vendored Kueue and NFD subcharts; running two of each is a conflict you would have to engineer around.</li>
+<li>The bundled Higress gateway acts as an ingress controller by default, overlapping the OpenShift Router; it can be pointed at an existing Higress, not at OpenShift Routes.</li>
+<li>Images are community images (Docker Hub, Quay, a Huawei Cloud mirror), not Red Hat certified, and likely run as root.</li>
+<li>Net: neither Red Hat nor GPUStack would support the combination. Red Hat's own stack (OpenShift AI, AI Inference Server, KServe with llm-d) covers most of the same ground natively.</li>
+</ul></td></tr>
+<tr><td><b>NVIDIA Run:ai</b></td><td><span class="pill b">Overlapping control planes; do not co-locate</span></td><td>
+<ul>
+<li>Both want to own GPU allocation. Run:ai sets its own scheduler (<code>runai-scheduler</code>/KAI) on every workload it manages and enforces driver-level GPU fractions; GPUStack's operator serves its own device plugins, does its own slicing and admits pods through Kueue. Two allocators advertising the same physical GPUs on one node invite double-booking and opaque failures.</li>
+<li>There is no integration: GPUStack does not submit work into Run:ai projects or respect Run:ai quotas, and Run:ai has no notion of GPUStack models.</li>
+<li>Coexistence pattern if needed: dedicated node pools (or separate clusters) per control plane, or use only GPUStack's gateway and route it to endpoints that Run:ai serves (GPUStack v2.1+ can front external providers). The second option uses GPUStack as an API gateway, where purpose-built gateways compete.</li>
+<li>Context: NVIDIA open-sourced the full Run:ai platform on October 13, 2026 (KAI Scheduler is a CNCF Sandbox project), removing much of GPUStack's "free versus paid" advantage on the scheduling side.</li>
+</ul></td></tr>
+<tr><td><b>NVIDIA BCM</b></td><td><span class="pill w">Works at the OS level; no validation</span></td><td>
+<ul>
+<li>BCM provisions bare-metal images and can stand up Kubernetes and Slurm. Run:ai lists BCM-managed Kubernetes as a supported distribution; GPUStack lists nothing.</li>
+<li><b>Docker path:</b> GPUStack's Docker worker needs only Linux, Docker, the NVIDIA driver and Container Toolkit, all present or installable on DGX OS. But BCM reprovisions nodes from software images, so the worker must be baked into a BCM image or category to avoid drift, and nodes must be fenced off from Slurm and Kubernetes scheduling so GPUs are not double-allocated.</li>
+<li><b>Kubernetes path:</b> on BCM-installed Kubernetes, BCM's packaged operators (GPU Operator and others) would collide with GPUStack's device manager, NFD and Kueue in the same way as on OpenShift.</li>
+<li>GPUStack is not Slurm-aware.</li>
+</ul></td></tr>
+<tr><td><b>NVIDIA DGX (H100, H200, B200, B300)</b></td><td><span class="pill g">Hardware supported</span> <span class="pill w">validate Blackwell and multi-node</span></td><td>
+<ul>
+<li>NVIDIA is a "tested" vendor; the site lists B300, H200 and H100, and the vendor's own benchmarks run on 8&times;H100, 8&times;H200 and 16&times;H100. Engine images ship for CUDA 12.8 through 13.0, which Blackwell needs. B200 is not named but is covered by "and others".</li>
+<li>Within a node, tensor parallelism over NVLink/NVSwitch is the engine's job and works as in plain vLLM or SGLang. Across nodes it uses Ray or vLLM multi-process mode; the operator advertises RDMA detection and topology-aware placement, but there is no published InfiniBand/RoCE reference architecture or multi-node DGX SuperPOD validation.</li>
+<li>Nothing GPUStack does replaces DGX-specific tooling (DCGM health, Mission Control, NVIDIA AI Enterprise support); it layers on top.</li>
+</ul></td></tr>
+<tr><td><b>AMD Instinct (MI300X class)</b></td><td><span class="pill g">Tested vendor</span></td><td>ROCm 7.x images for vLLM and SGLang ship each release. The Docker path is among the quickest ways to stand up a multi-engine model API on AMD hardware for comparison testing, provided it is isolated from production networks.</td></tr>
+</table></div>
+
+<h2 id="ready">6. Enterprise-readiness scorecard</h2>
+<div class="scroll"><table>
+<tr><th>Dimension</th><th>Open source</th><th>Enterprise edition</th><th>Notes</th></tr>
+<tr><td>Identity and SSO</td><td><span class="pill w">Partial</span></td><td><span class="pill g">LDAP, OIDC, SAML</span></td><td>SAML path had a 9.1 bypass in 2026; test before trusting.</td></tr>
+<tr><td>RBAC and API key scoping</td><td><span class="pill w">Basic</span></td><td><span class="pill g">Fine-grained</span></td><td>Scoped keys, IP allowlists, token quotas marketed.</td></tr>
+<tr><td>Multi-tenancy and isolation</td><td><span class="pill b">No</span></td><td><span class="pill w">Org isolation</span></td><td>Kubernetes creates a namespace per org, but all are PSA-privileged.</td></tr>
+<tr><td>High availability</td><td><span class="pill b">No (single server replica)</span></td><td><span class="pill w">Claimed</span></td><td>No public HA reference architecture or RTO/RPO.</td></tr>
+<tr><td>Audit logging</td><td><span class="pill b">Not listed</span></td><td><span class="pill w">Claimed</span></td><td>Content, retention and SIEM export not documented publicly.</td></tr>
+<tr><td>Metering and chargeback</td><td><span class="pill g">Usage and cost views</span></td><td><span class="pill g">Billing reports</span></td><td>A real strength; per-key token usage since v2.2.</td></tr>
+<tr><td>Observability</td><td><span class="pill g">Prometheus, Grafana</span></td><td><span class="pill g">+ topology view</span></td><td>Standard stack; easy to integrate.</td></tr>
+<tr><td>Air-gapped install</td><td><span class="pill g">Offline install (v2.1)</span></td><td><span class="pill g">Same</span></td><td>Registry override for engine images.</td></tr>
+<tr><td>Least privilege</td><td><span class="pill b">Poor</span></td><td><span class="pill b">Poor</span></td><td>Privileged workers, host network, Docker socket, privileged namespaces.</td></tr>
+<tr><td>Secure defaults and vuln response</td><td><span class="pill b">Weak 2026 record</span></td><td><span class="pill u">Unknown SLA</span></td><td>KEV-listed flaw; months between fix and CVE.</td></tr>
+<tr><td>Supply chain (SBOM, signing, FIPS)</td><td><span class="pill u">Not found</span></td><td><span class="pill u">Not found</span></td><td>No public SBOM, image signing or FIPS statement located.</td></tr>
+<tr><td>Upgrade and lifecycle policy</td><td><span class="pill w">Helm upgrade guide (v2.2.2)</span></td><td><span class="pill u">Unknown</span></td><td>No published LTS or support window per release.</td></tr>
+<tr><td>Platform certifications</td><td><span class="pill b">None</span></td><td><span class="pill u">None found</span></td><td>No Red Hat, NVIDIA AI Enterprise or cloud-marketplace certification found.</td></tr>
+</table></div>
+
+<h2 id="support">7. Company and support model</h2>
+<ul>
+<li><b>Company:</b> GPUStack.ai, formerly Seal, founded 2022, headquartered in the Qianhai Shenzhen&ndash;Hong Kong cooperation zone. CB Insights shows one seed round totaling about $7.7M from a single investor.</li>
+<li><b>Team:</b> co-founder and CEO George Qin, and co-founder Peng Jiang, both with prior roles at Rancher Labs and SUSE (Qin's history also lists Cisco, Oracle and Red Hat). The founding team is described as including former Rancher founders and lead employees, which explains the cloud-native fluency and the "cluster manager" framing.</li>
+<li><b>Open source:</b> community support only (GitHub issues, Discord); no SLA or indemnification.</li>
+<li><b>Enterprise edition:</b> contact-sales, custom pricing. Adds HA across management and serving planes, organization isolation, SSO, audit logs, IP controls, topology view, billing and white-labeling, plus "dedicated support." No public SLA tiers, support hours, regional presence, or named reference customers found.</li>
+<li><b>Ecosystem:</b> strong ties to the Chinese AI ecosystem: ModelScope as a model source, Ascend MindIE, Higress, openGauss/OceanBase, Chinese accelerator vendors, a Huawei Cloud image mirror, a Chinese cloud provider integration (SHUIHUA FUTURE) and a CTyun marketplace listing. Dify publishes an official GPUStack plugin with about 15,700 installs.</li>
+<li><b>Third-party-risk considerations (neutral):</b> contracting for the Enterprise edition means a vendor relationship with a PRC-headquartered startup; due diligence would cover support access to customer environments, data handling, subcontractors, financial runway and continuity. Running the Apache 2.0 code built from source avoids the contract but moves all patching and security review in-house, which the 2026 record makes non-trivial.</li>
+</ul>
+
+<h2 id="market">8. Market comparison</h2>
+<p>GPUStack bundles four layers that the enterprise market usually buys or builds separately: an AI gateway, a serving orchestrator, a GPU scheduler, and a GPU-instance (internal cloud) portal. Its peers therefore overlap only partially.</p>
+
+<h3>Capability overlap (assessment)</h3>
+<div class="scroll"><table>
+<tr><th>Product</th><th>Model API gateway, keys, quotas</th><th>Multi-engine serving orchestration</th><th>GPU scheduling and quotas</th><th>GPU instances (SSH/notebooks)</th><th>Non-NVIDIA accelerators</th><th>Metering and chargeback</th></tr>
+<tr><td><b>GPUStack</b></td><td>&#9679;</td><td>&#9679;</td><td>&#9680;</td><td>&#9679;</td><td>&#9679;</td><td>&#9679;</td></tr>
+<tr><td>NVIDIA Run:ai</td><td>&#9675;</td><td>&#9680;</td><td>&#9679;</td><td>&#9679;</td><td>&#9675;</td><td>&#9680;</td></tr>
+<tr><td>Red Hat OpenShift AI (+ AI Inference Server, KServe, llm-d)</td><td>&#9680;</td><td>&#9679;</td><td>&#9680; (Kueue)</td><td>&#9679; (workbenches)</td><td>&#9680; (AMD, Intel Gaudi, others)</td><td>&#9680;</td></tr>
+<tr><td>NVIDIA Dynamo + NIM</td><td>&#9675;</td><td>&#9679;</td><td>&#9675;</td><td>&#9675;</td><td>&#9675;</td><td>&#9675;</td></tr>
+<tr><td>KServe + llm-d (CNCF, DIY)</td><td>&#9680;</td><td>&#9679;</td><td>&#9675;</td><td>&#9675;</td><td>&#9680;</td><td>&#9675;</td></tr>
+<tr><td>Xinference (Xorbits)</td><td>&#9680;</td><td>&#9679;</td><td>&#9675;</td><td>&#9675;</td><td>&#9680;</td><td>&#9680;</td></tr>
+<tr><td>Ray Serve / Anyscale</td><td>&#9675;</td><td>&#9679;</td><td>&#9680;</td><td>&#9680;</td><td>&#9680;</td><td>&#9680;</td></tr>
+<tr><td>SkyPilot / dstack</td><td>&#9675;</td><td>&#9680;</td><td>&#9680;</td><td>&#9679;</td><td>&#9679;</td><td>&#9680;</td></tr>
+<tr><td>AI gateways (LiteLLM, Kong AI Gateway, Higress)</td><td>&#9679;</td><td>&#9675;</td><td>&#9675;</td><td>&#9675;</td><td>n/a</td><td>&#9679;</td></tr>
+<tr><td>GPU-cloud platforms (Rafay, hosted&middot;ai, vCluster)</td><td>&#9680;</td><td>&#9680;</td><td>&#9679;</td><td>&#9679;</td><td>&#9680;</td><td>&#9679;</td></tr>
+</table></div>
+<p class="note">&#9679; core capability &middot; &#9680; partial or via add-on &middot; &#9675; not a focus. Based on public product descriptions as of November 2026; verify specifics with each vendor.</p>
+
+<h3>Peer notes: overlap, stability, and when each wins</h3>
+<div class="scroll"><table>
+<tr><th>Peer</th><th>Overlap with GPUStack</th><th>Stability and support</th><th>Wins when&hellip;</th></tr>
+<tr><td><b>NVIDIA Run:ai</b></td><td>GPU scheduling, fractioning, quotas, notebooks and inference workloads on Kubernetes.</td><td>Mature; supported on vanilla Kubernetes, OpenShift and BCM; full platform open-sourced Oct 13, 2026 with commercial support via standalone Run:ai, Mission Control and NVIDIA AI Enterprise.</td><td>You need fair-share scheduling across many teams on NVIDIA fleets and vendor-backed support.</td></tr>
+<tr><td><b>Red Hat OpenShift AI / AI Inference Server</b></td><td>Model serving (hardened vLLM), KServe <code>LLMInferenceService</code> with llm-d routing, workbenches, Kueue.</td><td>Enterprise support and lifecycle from Red Hat; NVIDIA publishes a joint reference implementation.</td><td>OpenShift is the standard platform and you want one supported stack.</td></tr>
+<tr><td><b>NVIDIA Dynamo + NIM</b></td><td>Disaggregated serving, KV-aware routing, engine orchestration.</td><td>Open source; Dynamo-Triton supported under NVIDIA AI Enterprise; NVIDIA says Dynamo itself will join AI Enterprise in a future release.</td><td>Squeezing maximum throughput from large NVIDIA clusters.</td></tr>
+<tr><td><b>KServe + llm-d</b></td><td>Serving control plane and inference scheduling; KServe v0.20 consumes llm-d.</td><td>CNCF projects with broad vendor backing; no UI, tenancy or billing out of the box.</td><td>Platform team wants composable, standards-based building blocks.</td></tr>
+<tr><td><b>Xinference</b></td><td>Closest functional analog: supervisor/worker cluster, multi-engine, OpenAI-compatible API, multi-modal, enterprise edition.</td><td>Apache 2.0, about 9,400 stars (mid-2026); described as Australian-owned with an enterprise and cloud offering.</td><td>You want a GPUStack-style "single product" serving layer without GPUaaS.</td></tr>
+<tr><td><b>Ray Serve / Anyscale</b></td><td>Serving graphs, autoscaling, multi-node.</td><td>Mature open source; Anyscale commercial.</td><td>ML teams already standardized on Ray.</td></tr>
+<tr><td><b>SkyPilot / dstack</b></td><td>GPU provisioning across clouds and on-prem, dev environments, cloud bursting.</td><td>Active open source with commercial options.</td><td>The need is "find and launch GPUs anywhere," not a governed model API.</td></tr>
+<tr><td><b>AI gateways</b></td><td>The MaaS front door: keys, quotas, routing, fallback, cost tracking. GPUStack embeds Higress for exactly this.</td><td>Varies; this class has had its own trust-boundary vulnerabilities, which CSA notes alongside GPUStack's.</td><td>Serving is handled elsewhere and you only need governance at the API layer.</td></tr>
+<tr><td><b>GPU-cloud platforms</b></td><td>Multi-tenant GPUaaS, self-service clusters, billing.</td><td>Commercial; maturity varies by vendor.</td><td>Building an internal or external GPU cloud with tenant isolation as the core requirement.</td></tr>
+</table></div>
+
+<h3>Positioning (assessment)</h3>
+<p>GPUStack's differentiation is breadth in one box: gateway, serving orchestration, GPU instances and chargeback across nine accelerator families, with a polished UI. Its natural market is organizations that lack a mature Kubernetes platform team, run mixed or domestic Chinese accelerators, or want a departmental "private model API" quickly. The prevailing pattern in large regulated enterprises is composable instead: OpenShift or Kubernetes, GPU Operator, Run:ai/KAI or Kueue for scheduling, KServe/llm-d or Dynamo for serving, a separate AI gateway, and the corporate identity provider. GPUStack's all-in-one design is its pitch and also its risk: a large, privileged surface owned by one small vendor, where a single authorization bug reaches every GPU and every prompt.</p>
+
+<h2 id="fit">9. Where it could fit, and how to evaluate it</h2>
+<h3>Reasonable uses</h3>
+<ul>
+<li><b>Accelerator trial lab.</b> Stand up GPUStack's Docker path on a small isolated pool (cloud or on-prem) to compare AMD or other accelerators against NVIDIA with the same models, engines and API, without building a Kubernetes stack first.</li>
+<li><b>Recipe mining.</b> Use its Performance Lab and Auto Tune outputs as starting points for vLLM and SGLang flags in your own serving stack.</li>
+<li><b>Product reference.</b> Its combination of model API, GPU instances, quotas and chargeback is a useful template for what users of an internal GPU platform expect, even if built from other components.</li>
+</ul>
+<h3>What not to do</h3>
+<ul>
+<li>Do not install it on nodes managed by Run:ai, the NVIDIA GPU Operator, Slurm, or BCM-managed Kubernetes.</li>
+<li>Do not expose its API or worker ports to general corporate networks, or place it behind a same-host reverse proxy on versions earlier than 2.2.0.</li>
+<li>Do not send sensitive prompts through it until audit logging and worker endpoint hardening have been verified.</li>
+</ul>
+<h3>Evaluation checklist</h3>
+<ol>
+<li>Deploy v2.3.0 or later on dedicated hosts, management-network only, with egress filtering, external PostgreSQL and OIDC SSO.</li>
+<li>Pen-test the trust boundaries that failed in 2026: loopback and header trust, SAML/OIDC callbacks, worker ports, object-level authorization across orgs, cluster-scoped credentials, and custom-backend registration.</li>
+<li>Benchmark the same model on the same hardware with GPUStack versus hand-tuned vLLM or SGLang to measure the real tuning advantage.</li>
+<li>Test failure modes: worker loss, server restart, database failover, rolling engine upgrades.</li>
+<li>Run a Kubernetes registration on a throwaway cluster and inventory everything it installs (CRDs, webhooks, ClusterRoleBindings, privileged namespaces) and what uninstall leaves behind.</li>
+</ol>
+<h3>Questions for the vendor</h3>
+<ul>
+<li>Has an independent firm security-audited v2.x? Will you share the report and your SDLC and threat-modeling practices?</li>
+<li>What is your vulnerability disclosure SLA, and why did the critical 2026 fix take five months to reach a CVE?</li>
+<li>Is OpenShift (with restricted SCCs), Run:ai coexistence or BCM on your roadmap or tested?</li>
+<li>Can the operator defer to the NVIDIA GPU Operator's device plugin and an existing Kueue rather than installing its own?</li>
+<li>Enterprise edition: SLA tiers, support hours and regions, who can access customer environments and from where, SBOM and image signing, release support windows, reference customers in regulated industries.</li>
+</ul>
+
+<h2 id="sources">10. Sources</h2>
+<ol class="sources">
+<li><a href="https://gpustack.ai/">GPUStack home page</a> (editions, claims, hardware, integrations, v2.3)</li>
+<li><a href="https://cdn.jsdelivr.net/gh/gpustack/gpustack@main/README.md">GPUStack README (main branch)</a></li>
+<li><a href="https://docs.gpustack.ai/latest/user-guide/cluster-management/">GPUStack docs: Cluster Management</a> (Kubernetes registration, PSA privileged namespaces, Kueue/NFD, cloud providers)</li>
+<li><a href="https://docs.gpustack.ai/2.2/installation/helm/">GPUStack docs: Installation via Helm (2.2)</a> (hostNetwork, single replica, embedded PostgreSQL, experimental status)</li>
+<li><a href="https://docs.gpustack.ai/2.2/quickstart/">GPUStack docs: Quickstart (2.2)</a> (privileged worker with Docker socket)</li>
+<li><a href="https://deepwiki.com/gpustack/gpustack-operator">DeepWiki: GPUStack Operator</a> (components, CRDs, Kueue, CSI, Topograph)</li>
+<li><a href="https://github.com/gpustack/gpustack/releases">GPUStack GitHub releases</a> (v2.3.0 notes and GHSA-g665-42m7-mgcv)</li>
+<li><a href="https://sourceforge.net/projects/gpustack.mirror/files/v2.2.2/">GPUStack v2.2.2 release notes (mirror)</a>; <a href="https://sourceforge.net/projects/gpustack.mirror/files/v2.2.0/">v2.2.0 release notes (mirror)</a></li>
+<li><a href="https://labs.cloudsecurityalliance.org/research/csa-research-note-gpustack-cve-2026-102895-kev-20261110-csa/">Cloud Security Alliance: GPUStack CVE-2026-102895 KEV listing</a> (Nov 10, 2026)</li>
+<li><a href="https://www.rapid7.com/db/vulnerabilities/cve-2026-58658/">Rapid7: CVE-2026-58658</a>; <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-58658">NVD: CVE-2026-58658</a></li>
+<li><a href="https://cipherssecurity.com/cve/CVE-2026-102895/">CVE-2026-102895 record with CISA KEV dates</a></li>
+<li><a href="https://access.redhat.com/security/cve/CVE-2026-103002">Red Hat: CVE-2026-103002</a></li>
+<li><a href="https://www.everydev.ai/developers/gpustack">EveryDev: GPUStack developer profile</a> (founders, release history, enterprise edition); <a href="https://www.everydev.ai/tools/gpustack/llms.txt">EveryDev llms.txt</a></li>
+<li><a href="https://www.cbinsights.com/company/shuche-software">CB Insights: GPUStack.ai</a> (founding, HQ, formerly Seal); <a href="https://www.cbinsights.com/company/shuche-software/financials">financials</a></li>
+<li><a href="https://enterprisedna.co/directories/open-source/gpustack">Enterprise DNA: GPUStack facts</a> (v2.3.0 date, star counts)</li>
+<li><a href="https://dev.co/ai/frameworks/gpustack">DEV.co: GPUStack</a> (forks, open issues, support assessment)</li>
+<li><a href="https://fosdem.org/2025/schedule/speaker/frank_mai">FOSDEM 2025 speaker profile</a></li>
+<li><a href="https://www.ctyun.cn/ctyun-portal/file/02fba5b18061485596c65982b4452d76">CTyun GPUStack marketplace guide</a></li>
+<li><a href="https://marketplace.dify.ai/plugin/langgenius/gpustack">Dify marketplace: GPUStack plugin</a></li>
+<li><a href="https://developer.nvidia.com/blog/nvidia-runai-is-now-open-source-as-part-of-nvidia-dsx-ai-factory-platform/">NVIDIA: Run:ai is now open source</a>; <a href="https://techstrong.ai/articles/nvidia-hands-runai-to-the-open-source-community/">Techstrong coverage</a></li>
+<li><a href="https://run-ai-docs.nvidia.com/self-hosted/2.24/getting-started/installation/install-using-helm/system-requirements">NVIDIA Run:ai 2.24 system requirements</a> (OpenShift and BCM support); <a href="https://run-ai-docs.nvidia.com/self-hosted/2.22/getting-started/installation/system-requirements">2.22 requirements</a></li>
+<li><a href="https://docs.nvidia.com/base-command-manager/product-manuals/containerization/kubernetesoperators">NVIDIA BCM: Kubernetes operators</a></li>
+<li><a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/ai_workloads/red-hat-build-of-kueue">Red Hat build of Kueue (OCP 4.22)</a>; <a href="https://docs.nvidia.com/datacenter/cloud-native/openshift/26.3/install-nfd.html">NFD operator on OpenShift</a></li>
+<li><a href="https://www.redhat.com/en/blog/red-hat-ai-inference-server-technical-deep-dive">Red Hat AI Inference Server deep dive</a>; <a href="https://docs.nvidia.com/enterprise-reference-architectures/ai-factory-inference-hub-reference-design/latest/red-hat-ai-factory-with-nvidia-reference-implementation.html">Red Hat AI Factory with NVIDIA reference implementation</a></li>
+<li><a href="https://developers.redhat.com/articles/2026/04/21/kserve-llm-d-optimized-gen-ai-inference">Red Hat Developer: KServe and llm-d</a>; <a href="https://particula.tech/blog/llm-d-vs-dynamo-vs-vllm-production-stack">llm-d vs Dynamo vs vLLM production stack</a></li>
+<li><a href="https://developer.nvidia.com/triton-inference-server">NVIDIA Dynamo platform</a></li>
+<li><a href="https://dev.co/ai/frameworks/inference">DEV.co: Xinference</a>; <a href="https://www.everydev.ai/developers/xorbits">EveryDev: Xorbits</a></li>
+</ol>
+<p class="note">Prepared November 16, 2026 with Claude (Anthropic). Product details change quickly; confirm versions, support terms and security advisories with the vendor before making decisions.</p>
+</main>
+</body>
+</html>

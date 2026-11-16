@@ -1,6 +1,6 @@
 {
   "title": "Research",
-  "intro": "Research reports on AI platforms, agents, and infrastructure.  Each report is password-protected.",
+  "intro": "Research reports on AI platforms, agents, and infrastructure.  Most reports are password-protected.",
   "reports": [
     {
       "slug": "2026-11-13-model-onboarding",
@@ -257,6 +257,14 @@
       "summary": "A minimal jobs interface, versioned recipes, and a validation plan that separates governance from execution.",
       "generated": "2026-11-12",
       "published": "2026-11-13"
+    },
+    {
+      "slug": "2026-11-16-cluster-manager-review",
+      "title": "Assessing an Open-Source Heterogeneous GPU Cluster Manager for Enterprise Inference",
+      "theme": "Inference and GPU infrastructure",
+      "summary": "A technical and enterprise-readiness assessment of an open-source control plane for model serving and GPU provisioning: architecture, platform compatibility, security record, support model, and market alternatives.",
+      "generated": "2026-11-16",
+      "published": "2026-11-16"
     }
   ]
 }
